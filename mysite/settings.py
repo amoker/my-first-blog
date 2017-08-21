@@ -25,7 +25,7 @@ SECRET_KEY = 'p0l=p_tx58b(@y2&2)zmeo5d4xtw!)2n%1tmg3qe%js1n1wsve'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['*']  # 自己修改，之前为空
 
 
 # Application definition

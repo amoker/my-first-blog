@@ -5,15 +5,19 @@ from .forms import PostForm
 
 
 # 这就是 views 应该做的：连接模型和模板。
-# 在我们的 post_list 视图 中我们需要获取我们想要显示的模型，并将它们传递到模板中去。
-#  所以基本上在views中，我们决定什么 （模型） 将显示在模板中。
+# 在我们的post_list中我们需要获取我们想要显示的mdoels，并将它们传递到templates中去。
+
 def post_list(request):
-    posts = Post.objects.filter(published_date__lte=timezone.now()).order_by('published_date')
+    posts = Post.objects.filter(published_date__lte=timezone.now()).order_by('published_date')  # posts is QuerySet
+    if not posts:
+        posts = Post.objects.all()
     return render(request, 'blog/post_list.html', {'posts': posts})
 
-def post_detail(request, pk):
+
+def post_detail(request, pk):  # 注意需要接收pk
     post = get_object_or_404(Post, pk=pk)
     return render(request, 'blog/post_detail.html', {'post': post})
+
 
 def post_new(request):
     if request.method == "POST":
@@ -23,10 +27,11 @@ def post_new(request):
             post.author = request.user
             post.published_date = timezone.now()
             post.save()
-            return redirect('post_detail', pk=post.pk)
+            return redirect('post_detail', pk=post.pk)   # 第一个参数为url中定义的别名
     else:
         form = PostForm()
     return render(request, 'blog/post_edit.html', {'form': form})
+
 
 def post_edit(request, pk):
     post = get_object_or_404(Post, pk=pk)
